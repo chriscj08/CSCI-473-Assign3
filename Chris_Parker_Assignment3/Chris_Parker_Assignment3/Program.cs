@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-//Pointless change.
-//This comment means nothing.
-//This is a test
 namespace Chris_Parker_Assignment3
 {
     static class Program
@@ -19,7 +16,7 @@ namespace Chris_Parker_Assignment3
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
-            //test test test
+           
         }
     }
 }
