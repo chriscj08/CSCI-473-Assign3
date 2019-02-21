@@ -432,9 +432,9 @@
             // richTextBox1
             // 
             this.richTextBox1.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBox1.Location = new System.Drawing.Point(751, 48);
+            this.richTextBox1.Location = new System.Drawing.Point(771, 48);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(853, 886);
+            this.richTextBox1.Size = new System.Drawing.Size(659, 877);
             this.richTextBox1.TabIndex = 40;
             this.richTextBox1.Text = "";
             // 
@@ -443,7 +443,7 @@
             this.label17.AutoSize = true;
             this.label17.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label17.ForeColor = System.Drawing.SystemColors.Control;
-            this.label17.Location = new System.Drawing.Point(757, 9);
+            this.label17.Location = new System.Drawing.Point(815, 9);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(70, 23);
             this.label17.TabIndex = 41;
@@ -454,7 +454,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.ClientSize = new System.Drawing.Size(1616, 937);
+            this.ClientSize = new System.Drawing.Size(1445, 937);
             this.Controls.Add(this.label17);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.button6);
@@ -504,7 +504,7 @@
         }
 
         #endregion
-
+       
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
