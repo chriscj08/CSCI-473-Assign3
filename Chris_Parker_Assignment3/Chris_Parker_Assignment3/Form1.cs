@@ -25,8 +25,18 @@ namespace Chris_Parker_Assignment3
         {
             InitializeComponent();
 
+            //Fill the playerDict and guildDict with values
             ReadPlayers();
             ReadGuilds();
+
+            //Initialize our combo boxes for search "All classes from a single server
+            classCB.DataSource = Enum.GetNames(typeof(Classes)); //Populates the class combobox with the enum Classes's values
+            string[] servers = { "Beta4Azeroth", "TKWasASetback", "ZappyBoi" }; 
+            serverCB1.DataSource = servers; 
+            //*****************************
+
+
+           
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -37,6 +47,28 @@ namespace Chris_Parker_Assignment3
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void Find_Players_Click(object sender, EventArgs e)
+        {
+            query.Clear();
+
+            List<Player> playerName = new List<Player>();
+           
+            foreach (KeyValuePair<uint,Player> playerKvp in playerDict)
+            {
+                playerName.Add(playerKvp.Value);
+            }
+
+            var playerQuery = from players in playerName
+                              where (players.PlayerClass == (Classes) classCB.SelectedIndex)
+                              where (guildDict[players.GuildID].ServerName == (string) serverCB1.SelectedValue)
+                              select players;
+
+            foreach (var player in playerQuery)
+            {
+                query.Text += player.ToString() + "     " +player.PlayerClass + guildDict[player.GuildID].GuildName + " " + guildDict[player.GuildID].ServerName + "\n";
+            }
         }
 
         public void ReadPlayers()
@@ -75,9 +107,10 @@ namespace Chris_Parker_Assignment3
                 }
             }
         }
+
     }
 
-    
+
 
     public class Player : IComparable
     {
@@ -231,7 +264,7 @@ namespace Chris_Parker_Assignment3
          * */
         public override string ToString()
         {
-            return "";
+            return "Name: " + PlayerName;
         }
     }
 
