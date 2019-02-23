@@ -53,7 +53,7 @@ namespace Chris_Parker_Assignment3
                                                    (Role)Convert.ToUInt32(split[4]), Convert.ToUInt32(split[5]), Convert.ToUInt32(split[6]), Convert.ToUInt32(split[7]));
 
                     playerDict.Add(tempPlayer.PlayerId, tempPlayer); //adds the temp player to the playerDict
-                   
+                    
                     source = inFile.ReadLine(); //Read the next line
                 }
             }
@@ -69,8 +69,8 @@ namespace Chris_Parker_Assignment3
                     string[] splitTabs = source.Split('\t');
                     string[] splitHyphen = splitTabs[2].Split('-');
                     Guild tempGuild = new Guild(Convert.ToUInt32(splitTabs[0]), (GuildType)Convert.ToUInt32(splitTabs[1]), splitHyphen[0], splitHyphen[1]);
-                //    guildDict.Add(tempGuild.GuildID, tempGuild);
-                    MessageBox.Show(Convert.ToString(tempGuild.GuildID));
+                    guildDict.Add(tempGuild.GuildID, tempGuild);
+                    
                     source = inFile.ReadLine();
                 }
             }
@@ -259,10 +259,10 @@ namespace Chris_Parker_Assignment3
             this.serverName = serverName;
         }
 
-        public uint GuildID { get; }
-        public GuildType GuildType { get; }
-        public string GuildName { get; set; }
-        public string ServerName { get; set; }
+        public uint GuildID {  get { return guildID; } }
+        public GuildType GuildType { get { return guildType; } }
+        public string GuildName { get { return guildName; } }
+        public string ServerName { get { return serverName; } }
 
     }
     }
