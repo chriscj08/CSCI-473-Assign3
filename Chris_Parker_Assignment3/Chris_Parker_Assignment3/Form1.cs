@@ -41,39 +41,18 @@ namespace Chris_Parker_Assignment3
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            classCB.SelectedIndex = -1;
+            serverCB1.SelectedIndex = -1;
         }
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
 
-        }
-
-        private void Find_Players_Click(object sender, EventArgs e)
-        {
-            query.Clear();
-
-            List<Player> playerName = new List<Player>();
-           
-            foreach (KeyValuePair<uint,Player> playerKvp in playerDict)
-            {
-                playerName.Add(playerKvp.Value);
-            }
-
-            var playerQuery = from players in playerName
-                              where (players.PlayerClass == (Classes) classCB.SelectedIndex)
-                              where (guildDict[players.GuildID].ServerName == (string) serverCB1.SelectedValue)
-                              select players;
-
-            foreach (var player in playerQuery)
-            {
-                query.Text += player.ToString() + "     " +player.PlayerClass + guildDict[player.GuildID].GuildName + " " + guildDict[player.GuildID].ServerName + "\n";
-            }
-        }
+        }       
 
         public void ReadPlayers()
         {
-            using (StreamReader inFile = new StreamReader("C:/Users/Chrips/Downloads/players.txt"))
+            using (StreamReader inFile = new StreamReader("players.txt"))
             {
                 string source = inFile.ReadLine(); // remember to "prime the read"
                 while (source != null)
@@ -88,12 +67,12 @@ namespace Chris_Parker_Assignment3
                     
                     source = inFile.ReadLine(); //Read the next line
                 }
-            }
+            }            
         }
 
         public void ReadGuilds()
         {
-            using (StreamReader inFile = new StreamReader("C:/Users/Chrips/Downloads/guilds.txt"))
+            using (StreamReader inFile = new StreamReader("guilds.txt"))
             {
                 string source = inFile.ReadLine(); // remember to "prime the read"
                 while (source != null)
@@ -108,6 +87,52 @@ namespace Chris_Parker_Assignment3
             }
         }
 
+        private void Find_Classes_Click(object sender, EventArgs e)
+        {
+            query.Clear();
+            string textHeader = "All " + (Classes)classCB.SelectedIndex + " from " + (string)serverCB1.SelectedValue + "\r\n";
+            query.Text = textHeader;
+            query.Text += "----------------------------------------------------------------------------\r\n";
+            string textOutput;
+            List<Player> playerName = new List<Player>();
+
+            foreach (KeyValuePair<uint, Player> playerKvp in playerDict)
+            {
+                playerName.Add(playerKvp.Value);
+            }
+            playerName.Sort();
+
+            var playerQuery = from players in playerName
+                              where (players.PlayerClass == (Classes)classCB.SelectedIndex)
+                              where (guildDict[players.GuildID].ServerName == (string)serverCB1.SelectedValue)
+                              select players;
+
+            foreach (var player in playerQuery)
+            {
+                textOutput = string.Format("{0,-20}", player.ToString());
+                textOutput += string.Format("{0,-20}", "(" + player.PlayerClass + "-" + player.PlayerRole + ")");
+                textOutput += string.Format("{0,-15}", "Race: " + player.PlayerRace);
+                textOutput += string.Format("{0,-15}", "Level: " + player.PlayerLevel);
+                textOutput += string.Format("{0,-20}", "<" + guildDict[player.GuildID].GuildName + ">\r\n");
+
+                query.Text += textOutput;
+            }
+            query.Text += "\r\n";
+            query.Text += "END RESULTS\r\n";
+            query.Text += "----------------------------------------------------------------------------\r\n";
+        }
+
+        private void Race_Percentage_Click(object sender, EventArgs e)
+        {
+            query.Clear();
+            string textHeader = "Percentage of Each Race from "+ percentage_Server_Selection+ "\r\n";
+            query.Text = textHeader;
+            query.Text += "----------------------------------------------------------------------------\r\n";
+            //string textOutput;
+
+
+
+        }
     }
 
 

@@ -33,7 +33,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.classCB = new System.Windows.Forms.ComboBox();
             this.serverCB1 = new System.Windows.Forms.ComboBox();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.percentage_Server_Selection = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
@@ -119,14 +119,18 @@
             this.serverCB1.Size = new System.Drawing.Size(116, 21);
             this.serverCB1.TabIndex = 4;
             // 
-            // comboBox3
+            // percentage_Server_Selection
             // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(167, 193);
-            this.comboBox3.Margin = new System.Windows.Forms.Padding(2);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(116, 21);
-            this.comboBox3.TabIndex = 9;
+            this.percentage_Server_Selection.FormattingEnabled = true;
+            this.percentage_Server_Selection.Items.AddRange(new object[] {
+            "Beta4Azeroth",
+            "TKWasASetBack",
+            "ZappyBoi"});
+            this.percentage_Server_Selection.Location = new System.Drawing.Point(167, 193);
+            this.percentage_Server_Selection.Margin = new System.Windows.Forms.Padding(2);
+            this.percentage_Server_Selection.Name = "percentage_Server_Selection";
+            this.percentage_Server_Selection.Size = new System.Drawing.Size(116, 21);
+            this.percentage_Server_Selection.TabIndex = 9;
             // 
             // label6
             // 
@@ -161,7 +165,7 @@
             this.button1.TabIndex = 10;
             this.button1.Text = "Show Results";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.Find_Players_Click);
+            this.button1.Click += new System.EventHandler(this.Find_Classes_Click);
             // 
             // button2
             // 
@@ -172,6 +176,7 @@
             this.button2.TabIndex = 11;
             this.button2.Text = "Show Results";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.Race_Percentage_Click);
             // 
             // button4
             // 
@@ -399,11 +404,11 @@
             // 
             // query
             // 
-            this.query.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.query.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.query.Location = new System.Drawing.Point(578, 39);
             this.query.Margin = new System.Windows.Forms.Padding(2);
             this.query.Name = "query";
-            this.query.Size = new System.Drawing.Size(495, 590);
+            this.query.Size = new System.Drawing.Size(820, 614);
             this.query.TabIndex = 40;
             this.query.Text = "";
             // 
@@ -434,7 +439,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.ClientSize = new System.Drawing.Size(1084, 640);
+            this.ClientSize = new System.Drawing.Size(1416, 666);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.label17);
             this.Controls.Add(this.query);
@@ -460,7 +465,7 @@
             this.Controls.Add(this.label11);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.comboBox3);
+            this.Controls.Add(this.percentage_Server_Selection);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.serverCB1);
@@ -486,7 +491,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox classCB;
         private System.Windows.Forms.ComboBox serverCB1;
-        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.ComboBox percentage_Server_Selection;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button button1;
