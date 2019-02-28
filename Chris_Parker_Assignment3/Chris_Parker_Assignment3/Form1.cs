@@ -14,7 +14,7 @@ namespace Chris_Parker_Assignment3
     public enum Race { Orc, Troll, Tauren, Forsaken };
     public enum Classes{ Warrior, Mage, Druid, Priest, Warlock, Rogue, Paladin, Hunter, Shaman};
     public enum Role { Tank, Healer, Damage };
-    public enum GuildType { Casual, Questing, Mythic, Raiding, PVP};
+    public enum GuildType { Casual, Questing, Mythic, Raiding, PVP};    
 
     public partial class Form1 : Form
     {
@@ -38,12 +38,19 @@ namespace Chris_Parker_Assignment3
             //Initialize our combo box for percent of races in server.
             percentage_Server_Selection.DataSource = servers;
             //*****************************
+
+            Guild_SingleType_Selection.DataSource = Enum.GetNames(typeof(GuildType));
+            LvlRange_Role.DataSource = Enum.GetNames(typeof(Role));
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             classCB.SelectedIndex = -1;
             serverCB1.SelectedIndex = -1;
+            percentage_Server_Selection.SelectedIndex = -1;            
+            Guild_SingleType_Selection.SelectedIndex = -1;
+            LvlRange_Role.SelectedIndex = -1;
+            LvlRange_Server.SelectedIndex = -1;
         }
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
@@ -285,7 +292,7 @@ namespace Chris_Parker_Assignment3
                     textOutput = string.Format("{0,-20}", player.ToString());
                     textOutput += string.Format("{0,-20}", "(" + player.PlayerClass + "-" + player.PlayerRole + ")");
                     textOutput += string.Format("{0,-20}", "Race: " + player.PlayerRace);
-                    textOutput += string.Format("{0,-20}", "Level: " + player.PlayerLevel);
+                    textOutput += string.Format("{0,-15}", "Level: " + player.PlayerLevel);
                     textOutput += string.Format("{0,-10}", "<" + guildDict[player.GuildID].GuildName + ">\r\n");
 
                     query.Text += textOutput;
@@ -312,10 +319,9 @@ namespace Chris_Parker_Assignment3
             foreach (KeyValuePair<uint, Player> playerKvp in playerDict) //This loop adds dictionary entries to the new List
             {
                 playerName.Add(playerKvp.Value);
-            }
-            
+            }       
 
-            query.Clear();
+            
             string textHeader = "Percentage of Max Level Players in All Guilds ";
             query.Text = textHeader;
             query.Text += "----------------------------------------------------------------------------\r\n";
@@ -334,6 +340,94 @@ namespace Chris_Parker_Assignment3
                 }  
             }
 
+            query.Text += "\r\n";
+            query.Text += "END RESULTS\r\n";
+            query.Text += "----------------------------------------------------------------------------\r\n";
+        }
+
+        private void All_Guilds_Type_Click(object sender, EventArgs e)
+        {
+            //Header
+            query.Clear();
+            string textHeader = "All Guilds of " + Guild_SingleType_Selection.SelectedItem.ToString() + " Type\r\n";
+            query.Text = textHeader;
+            query.Text += "----------------------------------------------------------------------------\r\n";
+
+            List<Guild> guildName = new List<Guild>(); //Easier to query a list than a dictionary
+
+            foreach (KeyValuePair<uint, Guild> guildKvp in guildDict) //This loop adds dictionary entries to the new List
+            {
+                guildName.Add(guildKvp.Value);
+            }
+
+            //Query that orders the guilds in groups based on server name
+            var queryGuilds = from Guild in guildName
+                                 group Guild by Guild.ServerName into newGroup
+                                 orderby newGroup.Key
+                                 select newGroup;
+            //loops through the groups
+            foreach (var nameGroup in queryGuilds)
+            {
+                
+                 query.Text += nameGroup.Key + "\r\n";//prints out server 
+                               
+                foreach (var Guild in nameGroup)
+                {
+                    if (Guild.GuildType == (GuildType)Guild_SingleType_Selection.SelectedIndex)//checks to see if guild type matches selected type
+                    {
+                        query.Text += "\t<" + Guild.GuildName + ">\r\n";
+                    }
+                }
+
+            }
+        }
+
+        private void Role_Single_Server_Click(object sender, EventArgs e)
+        {
+            query.Clear(); //clears the query
+            int min = Convert.ToInt32(minRange.Value); //gets int from num up down
+            int max = Convert.ToInt32(maxRange.Value); //gets int from num up down
+            if (LvlRange_Role.SelectedItem == null || LvlRange_Server.SelectedItem == null || min>max) //makes sure all proper values are set before running
+            {
+                query.Text += "Error: Please make sure all proper field are filled in with proper values\r\n";
+                return;
+            }
+            //Header
+            string textHeader = "All " + LvlRange_Role.SelectedItem.ToString() + " from [" + LvlRange_Server.SelectedItem.ToString() + "], Levels " + minRange.Value + " to " + maxRange.Value + "\r\n";
+            query.Text = textHeader;
+            query.Text += "----------------------------------------------------------------------------\r\n";
+
+            List<Player> playerName = new List<Player>(); //Easier to query a list than a dictionary
+
+            foreach (KeyValuePair<uint, Player> playerKvp in playerDict) //This loop adds dictionary entries to the new List
+            {
+                playerName.Add(playerKvp.Value);
+            }           
+            playerName.Sort();//Sorts list in alphabetical order         
+
+            //LINQ command that gets all players that meet the specific criteria
+            var playerQuery = from players in playerName
+                              where (players.PlayerRole == (Role)LvlRange_Role.SelectedIndex)
+                              where (guildDict[players.GuildID].ServerName == LvlRange_Server.SelectedItem.ToString())
+                              where players.PlayerLevel >= min
+                              where players.PlayerLevel <= max
+                              select players;
+
+            string textOutput;
+
+            //Let's print out what we've found
+            foreach (var player in playerQuery)
+            {                
+                    textOutput = string.Format("{0,-20}", player.ToString());
+                    textOutput += string.Format("{0,-20}", "(" + player.PlayerClass + "-" + player.PlayerRole + ")");
+                    textOutput += string.Format("{0,-20}", "Race: " + player.PlayerRace);
+                    textOutput += string.Format("{0,-15}", "Level: " + player.PlayerLevel);
+                    textOutput += string.Format("{0,-10}", "<" + guildDict[player.GuildID].GuildName + ">\r\n");
+
+                    query.Text += textOutput;
+                  
+            }
+            
             query.Text += "\r\n";
             query.Text += "END RESULTS\r\n";
             query.Text += "----------------------------------------------------------------------------\r\n";
