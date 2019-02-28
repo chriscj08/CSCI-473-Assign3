@@ -32,11 +32,12 @@ namespace Chris_Parker_Assignment3
             //Initialize our combo boxes for search "All classes from a single server
             classCB.DataSource = Enum.GetNames(typeof(Classes)); //Populates the class combobox with the enum Classes's values
             string[] servers = { "Beta4Azeroth", "TKWasASetback", "ZappyBoi" }; 
-            serverCB1.DataSource = servers; 
+            serverCB1.DataSource = servers;
             //*****************************
 
-
-           
+            //Initialize our combo box for percent of races in server.
+            percentage_Server_Selection.DataSource = servers;
+            //*****************************
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -60,7 +61,7 @@ namespace Chris_Parker_Assignment3
                     string[] split = source.Split('\t'); //Split up the line of input
 
                     //Create a temporary Player object
-                    Player tempPlayer = new Player(Convert.ToUInt32(split[0]), split[1], (Race)Convert.ToUInt32(split[2]), (Classes)Convert.ToUInt32(split[3]),
+                    Player tempPlayer = new Player(Convert.ToUInt32(split[0]), split[1], (Race) Convert.ToUInt32(split[2]), (Classes)Convert.ToUInt32(split[3]),
                                                    (Role)Convert.ToUInt32(split[4]), Convert.ToUInt32(split[5]), Convert.ToUInt32(split[6]), Convert.ToUInt32(split[7]));
 
                     playerDict.Add(tempPlayer.PlayerId, tempPlayer); //adds the temp player to the playerDict
@@ -125,13 +126,152 @@ namespace Chris_Parker_Assignment3
         private void Race_Percentage_Click(object sender, EventArgs e)
         {
             query.Clear();
-            string textHeader = "Percentage of Each Race from "+ percentage_Server_Selection+ "\r\n";
+            string textHeader = "Percentage of Each Race from "+ percentage_Server_Selection.SelectedValue + "\r\n";
             query.Text = textHeader;
             query.Text += "----------------------------------------------------------------------------\r\n";
-            //string textOutput;
+            string textOutput;
+
+            List<Player> playerName = new List<Player>(); //Easier to query a list than a dictionary
+
+            foreach (KeyValuePair<uint, Player> playerKvp in playerDict)
+            {
+                playerName.Add(playerKvp.Value);
+            }
+            playerName.Sort();
+
+            var serverQuery = from servers in playerName
+                              where (guildDict[servers.GuildID].ServerName == (string)percentage_Server_Selection.SelectedValue)
+                              select servers;
+
+            textOutput = string.Format("Orc: {0,15: 0.00%}\r\n", (double) (serverQuery.Count(element => element.PlayerRace == (Race) 0)) / (serverQuery.Count()));
+            textOutput += string.Format("Troll: {0,13: 0.00%}\r\n", (double)(serverQuery.Count(element => element.PlayerRace == (Race) 1)) / (serverQuery.Count()));
+            textOutput += string.Format("Tauren: {0,12: 0.00%}\r\n", (double)(serverQuery.Count(element => element.PlayerRace == (Race) 2)) / (serverQuery.Count()));
+            textOutput += string.Format("Forsaken: {0,10: 0.00%}\r\n", (double)(serverQuery.Count(element => element.PlayerRace == (Race) 3)) / (serverQuery.Count()));
+
+            query.Text += textOutput;
+
+            query.Text += "\r\n";
+            query.Text += "END RESULTS\r\n";
+            query.Text += "----------------------------------------------------------------------------\r\n";
+        }
+
+        private void Fill_Role_Click(object sender, EventArgs e)
+        {
+            query.Clear();
+
+            //Call the logic for figuring out the criteria by calling the below function for each button
+            CouldFill(tank_Button);
+            CouldFill(healer_Button);
+            CouldFill(damage_Button);
+
+            if (!tank_Button.Checked && !healer_Button.Checked && !damage_Button.Checked) //If nothing is selected, Print an error
+            {
+                query.Text = "Please select Tank, Healer, or Damage!";
+                return;
+            }
+        }
+
+        private void CouldFill (RadioButton rdo)
+        {
+            if (rdo.Checked) //If the value is not checked, the following code will not execute
+            {
+                List<Player> playerName = new List<Player>(); //Easier to query a list than a dictionary
+
+                foreach (KeyValuePair<uint, Player> playerKvp in playerDict) //This loop adds dictionary entries to the new List
+                {
+                    playerName.Add(playerKvp.Value);
+                }
+                playerName.Sort();
+
+                query.Clear();
+                string textHeader = "All Eligible Players not Fulfilling the " + rdo.Text + " Role.\r\n";
+                query.Text = textHeader;
+                query.Text += "----------------------------------------------------------------------------\r\n";
+                string textOutput;
+
+                var playerQuery = from players in playerName
+                                  select players;
+
+                if (rdo.Text == "Tank")
+                {
+                     playerQuery = from players in playerName
+                                      where (players.PlayerRole != 0)  //Here we are making sure the Tank role isn't already selected for this player
+                                      where (players.PlayerClass == (Classes) 0 || //In this where statement we are only looking at classes with the Tank role
+                                             players.PlayerClass == (Classes) 2 || //That is, Warrior, Druid, or Paladin 
+                                             players.PlayerClass == (Classes) 6)
+                                      select players;
+                }
+
+                if (rdo.Text == "Healer")
+                {
+                     playerQuery = from players in playerName
+                                      where (players.PlayerRole != (Role) 1)  //Same logic as above except here we want to see if the Healer role isn't present
+                                      where (players.PlayerClass == (Classes) 2 || //Only Druids and Paladins can be healers
+                                             players.PlayerClass == (Classes) 6)
+                                      select players;
+                }
+
+                if (rdo.Text == "Damage")
+                {
+                     playerQuery = from players in playerName
+                                      where (players.PlayerRole != (Role) 2) //Our search is incredibly simple here since any class can be the DPS role
+                                      select players;                 //We only need check if they aren't already a DPS role
+                }
+
+                //Let's print out what we've found
+                foreach (var player in playerQuery)
+                {
+                    textOutput = string.Format("{0,-20}", player.ToString());
+                    textOutput += string.Format("{0,-20}", "(" + player.PlayerClass + "-" + player.PlayerRole + ")");
+                    textOutput += string.Format("{0,-20}", "Race: " + player.PlayerRace);
+                    textOutput += string.Format("{0,-20}", "Level: " + player.PlayerLevel);
+                    textOutput += string.Format("{0,-10}", "<" + guildDict[player.GuildID].GuildName + ">\r\n");
+
+                    query.Text += textOutput;
+                }
+                query.Text += "\r\n";
+                query.Text += "END RESULTS\r\n";
+                query.Text += "----------------------------------------------------------------------------\r\n";
+            
+            }
+        }
+
+        private void Percent_Maxlvl_Click(object sender, EventArgs e)
+        {
+            query.Clear();
+
+            List<Player> playerName = new List<Player>(); //Easier to query a list than a dictionary
+
+            foreach (KeyValuePair<uint, Player> playerKvp in playerDict) //This loop adds dictionary entries to the new List
+            {
+                playerName.Add(playerKvp.Value);
+            }
+            
+
+            query.Clear();
+            string textHeader = "Percentage of Max Level Players in All Guilds ";
+            query.Text = textHeader;
+            query.Text += "----------------------------------------------------------------------------\r\n";
+            
+
+            foreach (KeyValuePair<uint, Guild> guildKvp in guildDict)
+            {
+                var playerQuery = from players in playerName
+                                  where (players.GuildID == guildKvp.Key)
+                                  select players;
+                // MessageBox.Show("Max level players: " + playerQuery.Count(element => element.PlayerLevel == 60).ToString() + " Number of players: " + playerQuery.Count().ToString());
 
 
+                if (playerQuery.Count() != 0)
+                {
+                    query.Text += string.Format("{0,-22}", "<" + guildKvp.Value.GuildName + ">");
+                    query.Text += string.Format(": {0,-20: 0.00%}\r\n", (double)(playerQuery.Count(element => element.PlayerLevel == 60)) / (playerQuery.Count()));
+                }  
+            }
 
+            query.Text += "\r\n";
+            query.Text += "END RESULTS\r\n";
+            query.Text += "----------------------------------------------------------------------------\r\n";
         }
     }
 

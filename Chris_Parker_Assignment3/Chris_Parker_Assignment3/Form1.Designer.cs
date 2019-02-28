@@ -53,16 +53,18 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
-            this.button6 = new System.Windows.Forms.Button();
+            this.Percent_Maxlvl = new System.Windows.Forms.Button();
             this.label18 = new System.Windows.Forms.Label();
             this.query = new System.Windows.Forms.RichTextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.damage_Button = new System.Windows.Forms.RadioButton();
+            this.healer_Button = new System.Windows.Forms.RadioButton();
+            this.tank_Button = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -337,58 +339,16 @@
             this.label16.TabIndex = 32;
             this.label16.Text = "All Players Who Could Fill A Roll But Presently Aren\'t";
             // 
-            // radioButton1
+            // Percent_Maxlvl
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButton1.ForeColor = System.Drawing.SystemColors.Control;
-            this.radioButton1.Location = new System.Drawing.Point(28, 507);
-            this.radioButton1.Margin = new System.Windows.Forms.Padding(2);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(58, 21);
-            this.radioButton1.TabIndex = 33;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Tank";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            // 
-            // radioButton2
-            // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButton2.ForeColor = System.Drawing.SystemColors.Control;
-            this.radioButton2.Location = new System.Drawing.Point(92, 507);
-            this.radioButton2.Margin = new System.Windows.Forms.Padding(2);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(74, 21);
-            this.radioButton2.TabIndex = 34;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Healer";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
-            // 
-            // radioButton3
-            // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButton3.ForeColor = System.Drawing.SystemColors.Control;
-            this.radioButton3.Location = new System.Drawing.Point(175, 507);
-            this.radioButton3.Margin = new System.Windows.Forms.Padding(2);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(74, 21);
-            this.radioButton3.TabIndex = 35;
-            this.radioButton3.TabStop = true;
-            this.radioButton3.Text = "Damage";
-            this.radioButton3.UseVisualStyleBackColor = true;
-            // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(436, 609);
-            this.button6.Margin = new System.Windows.Forms.Padding(2);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(82, 19);
-            this.button6.TabIndex = 39;
-            this.button6.Text = "Show Results";
-            this.button6.UseVisualStyleBackColor = true;
+            this.Percent_Maxlvl.Location = new System.Drawing.Point(436, 609);
+            this.Percent_Maxlvl.Margin = new System.Windows.Forms.Padding(2);
+            this.Percent_Maxlvl.Name = "Percent_Maxlvl";
+            this.Percent_Maxlvl.Size = new System.Drawing.Size(82, 19);
+            this.Percent_Maxlvl.TabIndex = 39;
+            this.Percent_Maxlvl.Text = "Show Results";
+            this.Percent_Maxlvl.UseVisualStyleBackColor = true;
+            this.Percent_Maxlvl.Click += new System.EventHandler(this.Percent_Maxlvl_Click);
             // 
             // label18
             // 
@@ -433,6 +393,55 @@
             this.button3.TabIndex = 42;
             this.button3.Text = "Show Results";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.Fill_Role_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.damage_Button);
+            this.groupBox1.Controls.Add(this.healer_Button);
+            this.groupBox1.Controls.Add(this.tank_Button);
+            this.groupBox1.Location = new System.Drawing.Point(27, 492);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(291, 50);
+            this.groupBox1.TabIndex = 43;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "groupBox1";
+            // 
+            // damage_Button
+            // 
+            this.damage_Button.AutoSize = true;
+            this.damage_Button.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.damage_Button.Location = new System.Drawing.Point(210, 19);
+            this.damage_Button.Name = "damage_Button";
+            this.damage_Button.Size = new System.Drawing.Size(65, 17);
+            this.damage_Button.TabIndex = 2;
+            this.damage_Button.TabStop = true;
+            this.damage_Button.Text = "Damage";
+            this.damage_Button.UseVisualStyleBackColor = true;
+            // 
+            // healer_Button
+            // 
+            this.healer_Button.AutoSize = true;
+            this.healer_Button.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.healer_Button.Location = new System.Drawing.Point(108, 19);
+            this.healer_Button.Name = "healer_Button";
+            this.healer_Button.Size = new System.Drawing.Size(56, 17);
+            this.healer_Button.TabIndex = 1;
+            this.healer_Button.TabStop = true;
+            this.healer_Button.Text = "Healer";
+            this.healer_Button.UseVisualStyleBackColor = true;
+            // 
+            // tank_Button
+            // 
+            this.tank_Button.AutoSize = true;
+            this.tank_Button.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.tank_Button.Location = new System.Drawing.Point(6, 19);
+            this.tank_Button.Name = "tank_Button";
+            this.tank_Button.Size = new System.Drawing.Size(50, 17);
+            this.tank_Button.TabIndex = 0;
+            this.tank_Button.TabStop = true;
+            this.tank_Button.Text = "Tank";
+            this.tank_Button.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -440,14 +449,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.ClientSize = new System.Drawing.Size(1416, 666);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.label17);
             this.Controls.Add(this.query);
-            this.Controls.Add(this.button6);
+            this.Controls.Add(this.Percent_Maxlvl);
             this.Controls.Add(this.label18);
-            this.Controls.Add(this.radioButton3);
-            this.Controls.Add(this.radioButton2);
-            this.Controls.Add(this.radioButton1);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.comboBox8);
@@ -479,6 +486,8 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -511,14 +520,15 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.RadioButton radioButton3;
-        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button Percent_Maxlvl;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.RichTextBox query;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.RadioButton damage_Button;
+        private System.Windows.Forms.RadioButton healer_Button;
+        private System.Windows.Forms.RadioButton tank_Button;
     }
 }
 
