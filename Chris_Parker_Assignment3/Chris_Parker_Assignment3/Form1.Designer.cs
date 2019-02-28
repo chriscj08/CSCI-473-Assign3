@@ -39,17 +39,17 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            this.comboBox6 = new System.Windows.Forms.ComboBox();
-            this.comboBox7 = new System.Windows.Forms.ComboBox();
+            this.LvlRange_Server = new System.Windows.Forms.ComboBox();
+            this.LvlRange_Role = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.minRange = new System.Windows.Forms.NumericUpDown();
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.maxRange = new System.Windows.Forms.NumericUpDown();
             this.button5 = new System.Windows.Forms.Button();
-            this.comboBox8 = new System.Windows.Forms.ComboBox();
+            this.Guild_SingleType_Selection = new System.Windows.Forms.ComboBox();
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
@@ -62,8 +62,8 @@
             this.damage_Button = new System.Windows.Forms.RadioButton();
             this.healer_Button = new System.Windows.Forms.RadioButton();
             this.tank_Button = new System.Windows.Forms.RadioButton();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.minRange)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maxRange)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -189,24 +189,29 @@
             this.button4.TabIndex = 23;
             this.button4.Text = "Show Results";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.Role_Single_Server_Click);
             // 
-            // comboBox6
+            // LvlRange_Server
             // 
-            this.comboBox6.FormattingEnabled = true;
-            this.comboBox6.Location = new System.Drawing.Point(167, 284);
-            this.comboBox6.Margin = new System.Windows.Forms.Padding(2);
-            this.comboBox6.Name = "comboBox6";
-            this.comboBox6.Size = new System.Drawing.Size(116, 21);
-            this.comboBox6.TabIndex = 22;
+            this.LvlRange_Server.FormattingEnabled = true;
+            this.LvlRange_Server.Items.AddRange(new object[] {
+            "Beta4Azeroth",
+            "TKWasASetback",
+            "ZappyBoi"});
+            this.LvlRange_Server.Location = new System.Drawing.Point(167, 284);
+            this.LvlRange_Server.Margin = new System.Windows.Forms.Padding(2);
+            this.LvlRange_Server.Name = "LvlRange_Server";
+            this.LvlRange_Server.Size = new System.Drawing.Size(116, 21);
+            this.LvlRange_Server.TabIndex = 22;
             // 
-            // comboBox7
+            // LvlRange_Role
             // 
-            this.comboBox7.FormattingEnabled = true;
-            this.comboBox7.Location = new System.Drawing.Point(27, 284);
-            this.comboBox7.Margin = new System.Windows.Forms.Padding(2);
-            this.comboBox7.Name = "comboBox7";
-            this.comboBox7.Size = new System.Drawing.Size(116, 21);
-            this.comboBox7.TabIndex = 21;
+            this.LvlRange_Role.FormattingEnabled = true;
+            this.LvlRange_Role.Location = new System.Drawing.Point(27, 284);
+            this.LvlRange_Role.Margin = new System.Windows.Forms.Padding(2);
+            this.LvlRange_Role.Name = "LvlRange_Role";
+            this.LvlRange_Role.Size = new System.Drawing.Size(116, 21);
+            this.LvlRange_Role.TabIndex = 21;
             // 
             // label9
             // 
@@ -244,13 +249,28 @@
             this.label11.TabIndex = 18;
             this.label11.Text = "All Role Type from a Single Server Within a Level Range";
             // 
-            // numericUpDown1
+            // minRange
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(27, 336);
-            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(2);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(36, 20);
-            this.numericUpDown1.TabIndex = 24;
+            this.minRange.Location = new System.Drawing.Point(27, 336);
+            this.minRange.Margin = new System.Windows.Forms.Padding(2);
+            this.minRange.Maximum = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            this.minRange.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.minRange.Name = "minRange";
+            this.minRange.Size = new System.Drawing.Size(36, 20);
+            this.minRange.TabIndex = 24;
+            this.minRange.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // label12
             // 
@@ -276,13 +296,28 @@
             this.label13.TabIndex = 27;
             this.label13.Text = "Max";
             // 
-            // numericUpDown2
+            // maxRange
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(102, 336);
-            this.numericUpDown2.Margin = new System.Windows.Forms.Padding(2);
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(36, 20);
-            this.numericUpDown2.TabIndex = 26;
+            this.maxRange.Location = new System.Drawing.Point(102, 336);
+            this.maxRange.Margin = new System.Windows.Forms.Padding(2);
+            this.maxRange.Maximum = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            this.maxRange.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.maxRange.Name = "maxRange";
+            this.maxRange.Size = new System.Drawing.Size(36, 20);
+            this.maxRange.TabIndex = 26;
+            this.maxRange.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // button5
             // 
@@ -293,15 +328,16 @@
             this.button5.TabIndex = 31;
             this.button5.Text = "Show Results";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.All_Guilds_Type_Click);
             // 
-            // comboBox8
+            // Guild_SingleType_Selection
             // 
-            this.comboBox8.FormattingEnabled = true;
-            this.comboBox8.Location = new System.Drawing.Point(28, 431);
-            this.comboBox8.Margin = new System.Windows.Forms.Padding(2);
-            this.comboBox8.Name = "comboBox8";
-            this.comboBox8.Size = new System.Drawing.Size(116, 21);
-            this.comboBox8.TabIndex = 30;
+            this.Guild_SingleType_Selection.FormattingEnabled = true;
+            this.Guild_SingleType_Selection.Location = new System.Drawing.Point(28, 431);
+            this.Guild_SingleType_Selection.Margin = new System.Windows.Forms.Padding(2);
+            this.Guild_SingleType_Selection.Name = "Guild_SingleType_Selection";
+            this.Guild_SingleType_Selection.Size = new System.Drawing.Size(116, 21);
+            this.Guild_SingleType_Selection.TabIndex = 30;
             // 
             // label14
             // 
@@ -400,7 +436,7 @@
             this.groupBox1.Controls.Add(this.damage_Button);
             this.groupBox1.Controls.Add(this.healer_Button);
             this.groupBox1.Controls.Add(this.tank_Button);
-            this.groupBox1.Location = new System.Drawing.Point(27, 492);
+            this.groupBox1.Location = new System.Drawing.Point(40, 492);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(291, 50);
             this.groupBox1.TabIndex = 43;
@@ -457,16 +493,16 @@
             this.Controls.Add(this.label18);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.button5);
-            this.Controls.Add(this.comboBox8);
+            this.Controls.Add(this.Guild_SingleType_Selection);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.label13);
-            this.Controls.Add(this.numericUpDown2);
+            this.Controls.Add(this.maxRange);
             this.Controls.Add(this.label12);
-            this.Controls.Add(this.numericUpDown1);
+            this.Controls.Add(this.minRange);
             this.Controls.Add(this.button4);
-            this.Controls.Add(this.comboBox6);
-            this.Controls.Add(this.comboBox7);
+            this.Controls.Add(this.LvlRange_Server);
+            this.Controls.Add(this.LvlRange_Role);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label11);
@@ -484,8 +520,8 @@
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.minRange)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maxRange)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
@@ -506,17 +542,17 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.ComboBox comboBox6;
-        private System.Windows.Forms.ComboBox comboBox7;
+        private System.Windows.Forms.ComboBox LvlRange_Server;
+        private System.Windows.Forms.ComboBox LvlRange_Role;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown minRange;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.NumericUpDown maxRange;
         private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.ComboBox comboBox8;
+        private System.Windows.Forms.ComboBox Guild_SingleType_Selection;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label16;
