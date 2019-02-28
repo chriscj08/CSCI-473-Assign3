@@ -271,6 +271,7 @@
             0,
             0,
             0});
+            this.minRange.ValueChanged += new System.EventHandler(this.minChanged);
             // 
             // label12
             // 
@@ -318,6 +319,7 @@
             0,
             0,
             0});
+            this.maxRange.ValueChanged += new System.EventHandler(this.maxChanged);
             // 
             // button5
             // 

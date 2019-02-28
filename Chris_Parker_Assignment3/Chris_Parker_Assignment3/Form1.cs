@@ -1,4 +1,10 @@
-﻿using System;
+﻿/* Christopher Jurrens and Parker Cox
+ * 
+ * Assingment 3: LINQ to the past 
+ * 
+ * */
+
+using System;
 using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -345,10 +351,21 @@ namespace Chris_Parker_Assignment3
             query.Text += "----------------------------------------------------------------------------\r\n";
         }
 
+
+        /* Function All_Guilds_Type_Click
+         * 
+         * Finds all guilds that are of a certain type and groups them by server 
+         * 
+         * */
         private void All_Guilds_Type_Click(object sender, EventArgs e)
         {
             //Header
             query.Clear();
+            if(Guild_SingleType_Selection.SelectedItem==null)
+            {
+                query.Text = "Please select a guild type from the drop down";
+                return;
+            }
             string textHeader = "All Guilds of " + Guild_SingleType_Selection.SelectedItem.ToString() + " Type\r\n";
             query.Text = textHeader;
             query.Text += "----------------------------------------------------------------------------\r\n";
@@ -367,29 +384,39 @@ namespace Chris_Parker_Assignment3
                                  select newGroup;
             //loops through the groups
             foreach (var nameGroup in queryGuilds)
-            {
-                
+            {                
                  query.Text += nameGroup.Key + "\r\n";//prints out server 
                                
                 foreach (var Guild in nameGroup)
-                {
+                {                    
                     if (Guild.GuildType == (GuildType)Guild_SingleType_Selection.SelectedIndex)//checks to see if guild type matches selected type
                     {
                         query.Text += "\t<" + Guild.GuildName + ">\r\n";
                     }
                 }
 
+                query.Text += "\r\n";
+
             }
+            query.Text += "\r\n";
+            query.Text += "END RESULTS\r\n";
+            query.Text += "----------------------------------------------------------------------------\r\n";
         }
 
+        /* Function Role_Single_Server_Click
+         * 
+         * Finds all the players that are a certain role 
+         * within a level range and are on a certain server
+         * 
+         * */
         private void Role_Single_Server_Click(object sender, EventArgs e)
         {
             query.Clear(); //clears the query
             int min = Convert.ToInt32(minRange.Value); //gets int from num up down
             int max = Convert.ToInt32(maxRange.Value); //gets int from num up down
-            if (LvlRange_Role.SelectedItem == null || LvlRange_Server.SelectedItem == null || min>max) //makes sure all proper values are set before running
+            if (LvlRange_Role.SelectedItem == null || LvlRange_Server.SelectedItem == null) //makes sure all proper values are set before running
             {
-                query.Text += "Error: Please make sure all proper field are filled in with proper values\r\n";
+                query.Text += "Please make sure all proper field are filled in with proper values\r\n";
                 return;
             }
             //Header
@@ -432,16 +459,47 @@ namespace Chris_Parker_Assignment3
             query.Text += "END RESULTS\r\n";
             query.Text += "----------------------------------------------------------------------------\r\n";
         }
+
+        /* Function minChanged
+         * 
+         * makes sure the min level range can never 
+         * be greater than the max.
+         * 
+         * */
+        private void minChanged(object sender, EventArgs e)
+        {
+            int min = Convert.ToInt32(minRange.Value); //gets int from num up down
+            int max = Convert.ToInt32(maxRange.Value); //gets int from num up down
+
+            if(min>max)
+            {
+                maxRange.Value = minRange.Value; //if min>max set max = min
+            }
+        }
+
+        /* Function maxChanged
+         * 
+         * makes sure the max level range can never 
+         * be less than the min.
+         * 
+         * */
+        private void maxChanged(object sender, EventArgs e)
+        {
+            int min = Convert.ToInt32(minRange.Value); //gets int from num up down
+            int max = Convert.ToInt32(maxRange.Value); //gets int from num up down
+
+            if(max<min)
+            {
+                minRange.Value = maxRange.Value; //if min>max set min = max
+            }
+        }
     }
 
 
 
     public class Player : IComparable
     {
-        //Constants
-        private static uint MAX_ILVL = 360; //Max item level
-        private static uint MAX_PRIMARY = 200; // Max primary stat
-        private static uint MAX_STAMINA = 275; //Max stamina
+        //Constants        
         private static uint MAX_LEVEL = 60; //max player level
 
         //Data members
