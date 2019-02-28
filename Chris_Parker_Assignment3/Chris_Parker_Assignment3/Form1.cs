@@ -51,6 +51,12 @@ namespace Chris_Parker_Assignment3
 
         }       
 
+        /* ReadPlayers()
+         * 
+         * Use: This method takes the players.txt file and uses its information 
+         * to construct our dictionary containing all the Player objects
+         * 
+         */
         public void ReadPlayers()
         {
             using (StreamReader inFile = new StreamReader("players.txt"))
@@ -71,6 +77,12 @@ namespace Chris_Parker_Assignment3
             }            
         }
 
+        /* ReadGuilds()
+         * 
+         * Use: This method takes the guilds.txt file and uses its information 
+         * to construct our dictionary containing all the Guild objects
+         * 
+         */
         public void ReadGuilds()
         {
             using (StreamReader inFile = new StreamReader("guilds.txt"))
@@ -88,15 +100,32 @@ namespace Chris_Parker_Assignment3
             }
         }
 
+        /* Find_Classes_Click()
+         * 
+         * Use: This is a windows form event. This method prints to the query textbox
+         * all players from a selected server given a certain class.
+         * 
+         */
         private void Find_Classes_Click(object sender, EventArgs e)
         {
             query.Clear();
+
+            
+            if (classCB.SelectedItem == null || serverCB1.SelectedItem == null )
+            {
+                query.Text += "Please select both criteria (Class and Server Name). ";
+                return;
+            }
+
             string textHeader = "All " + (Classes)classCB.SelectedIndex + " from " + (string)serverCB1.SelectedValue + "\r\n";
             query.Text = textHeader;
             query.Text += "----------------------------------------------------------------------------\r\n";
             string textOutput;
+
+            //We are using a List here because they seem to be much easier to query
             List<Player> playerName = new List<Player>();
 
+            //Here we are just adding to the List all players stored in our playerDict dictionary
             foreach (KeyValuePair<uint, Player> playerKvp in playerDict)
             {
                 playerName.Add(playerKvp.Value);
@@ -104,10 +133,11 @@ namespace Chris_Parker_Assignment3
             playerName.Sort();
 
             var playerQuery = from players in playerName
-                              where (players.PlayerClass == (Classes)classCB.SelectedIndex)
-                              where (guildDict[players.GuildID].ServerName == (string)serverCB1.SelectedValue)
-                              select players;
+                              where (players.PlayerClass == (Classes)classCB.SelectedIndex) //If we find a player with said class
+                              where (guildDict[players.GuildID].ServerName == (string)serverCB1.SelectedValue)//Belonging to said server name
+                              select players; //Select that individual
 
+            //With all the players aquired, let's print some information about them
             foreach (var player in playerQuery)
             {
                 textOutput = string.Format("{0,-20}", player.ToString());
@@ -123,16 +153,30 @@ namespace Chris_Parker_Assignment3
             query.Text += "----------------------------------------------------------------------------\r\n";
         }
 
+        /* Race_Percentage_Click()
+         * 
+         * Use: This is a windows form event. This method displays the percentage of each race given
+         * a server name.
+         * 
+         */
         private void Race_Percentage_Click(object sender, EventArgs e)
         {
             query.Clear();
+
+            if (percentage_Server_Selection.SelectedItem == null)
+            {
+                query.Text = "Please select a Server Name. ";
+                return;
+            }
             string textHeader = "Percentage of Each Race from "+ percentage_Server_Selection.SelectedValue + "\r\n";
             query.Text = textHeader;
             query.Text += "----------------------------------------------------------------------------\r\n";
             string textOutput;
 
+            //We are using a List here because they seem to be much easier to query
             List<Player> playerName = new List<Player>(); //Easier to query a list than a dictionary
 
+            //Here we are just adding to the List all players stored in our playerDict dictionary
             foreach (KeyValuePair<uint, Player> playerKvp in playerDict)
             {
                 playerName.Add(playerKvp.Value);
@@ -140,9 +184,10 @@ namespace Chris_Parker_Assignment3
             playerName.Sort();
 
             var serverQuery = from servers in playerName
-                              where (guildDict[servers.GuildID].ServerName == (string)percentage_Server_Selection.SelectedValue)
+                              where (guildDict[servers.GuildID].ServerName == (string)percentage_Server_Selection.SelectedValue) //Select players belonging to said server name
                               select servers;
-
+            //Here we rely on the Count() method to return the amount contained in our serverQuery given a certain criteria
+            //For each race, compute (members of server name with a given race) DIVIDED BY (total number of players in said server name)
             textOutput = string.Format("Orc: {0,15: 0.00%}\r\n", (double) (serverQuery.Count(element => element.PlayerRace == (Race) 0)) / (serverQuery.Count()));
             textOutput += string.Format("Troll: {0,13: 0.00%}\r\n", (double)(serverQuery.Count(element => element.PlayerRace == (Race) 1)) / (serverQuery.Count()));
             textOutput += string.Format("Tauren: {0,12: 0.00%}\r\n", (double)(serverQuery.Count(element => element.PlayerRace == (Race) 2)) / (serverQuery.Count()));
@@ -155,6 +200,14 @@ namespace Chris_Parker_Assignment3
             query.Text += "----------------------------------------------------------------------------\r\n";
         }
 
+        /* Fill_Role_Click()
+         * 
+         * Use: This method calls our CouldFill method. We use this method
+         * to pass to the CouldFill method an argument (in this case a radio button)
+         * so that we can determine a certain role player could fulfill but
+         * currently aren't.
+         * 
+         */
         private void Fill_Role_Click(object sender, EventArgs e)
         {
             query.Clear();
@@ -171,6 +224,14 @@ namespace Chris_Parker_Assignment3
             }
         }
 
+        /* CouldFill()
+         * 
+         * Use: This method takes a radio button object and see if it's
+         * checked. If it is, it compares its text value with Tank, Healer,
+         * or Damage string values and executes a slightly different code
+         * when a condition is satisfied.
+         * 
+         */
         private void CouldFill (RadioButton rdo)
         {
             if (rdo.Checked) //If the value is not checked, the following code will not execute
@@ -236,6 +297,12 @@ namespace Chris_Parker_Assignment3
             }
         }
 
+        /* Percent_Maxlvl_Click()
+         * 
+         * Use: This determines the percentage of max level players in each guild. This method
+         * is the only method that contains a query with a foreach loop
+         * 
+         */
         private void Percent_Maxlvl_Click(object sender, EventArgs e)
         {
             query.Clear();
@@ -253,16 +320,14 @@ namespace Chris_Parker_Assignment3
             query.Text = textHeader;
             query.Text += "----------------------------------------------------------------------------\r\n";
             
-
+            //Look at each guild in the guild dictionary
             foreach (KeyValuePair<uint, Guild> guildKvp in guildDict)
             {
                 var playerQuery = from players in playerName
-                                  where (players.GuildID == guildKvp.Key)
+                                  where (players.GuildID == guildKvp.Key) //If the player has a matching guild ID with the guild, select that player
                                   select players;
-                // MessageBox.Show("Max level players: " + playerQuery.Count(element => element.PlayerLevel == 60).ToString() + " Number of players: " + playerQuery.Count().ToString());
 
-
-                if (playerQuery.Count() != 0)
+                if (playerQuery.Count() != 0) //We do this check because some guilds have zero players, thus resulting in a divide by zero.
                 {
                     query.Text += string.Format("{0,-22}", "<" + guildKvp.Value.GuildName + ">");
                     query.Text += string.Format(": {0,-20: 0.00%}\r\n", (double)(playerQuery.Count(element => element.PlayerLevel == 60)) / (playerQuery.Count()));
